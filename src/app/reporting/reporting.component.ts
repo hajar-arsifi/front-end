@@ -65,14 +65,12 @@ export class ReportingComponent implements OnInit {
       this.anneeDebut=this.projet.annee;
       this.anneeFin=this.projet.anneeFin;
       this.differenceAnnees=this.anneeFin-this.anneeDebut;
-     if(this.test==false){
+
       for(let i=0;i<=this.differenceAnnees;i++){
         this.listeAnnees.push(this.anneeDebut+i)
       }
       this.anneesProjet=this.listeAnnees;
-     }
       console.log(this.anneesProjet)
-
       for(let j=0;j<this.anneesProjet.length;j++){
         this.reportingService.CAEParProjetParAnnee(this.anneesProjet[j],this.projet.id)
         .subscribe((data:number) => {
@@ -112,7 +110,24 @@ export class ReportingComponent implements OnInit {
 
      }
       this.anneesProjet=newListeAnnee;
-      console.log(newListeAnnee)
+      this.caEstimeInverse=null;
+      for(let j=0;j<this.anneesProjet.length;j++){
+        this.reportingService.CAEParProjetParAnnee(this.anneesProjet[j],this.projet.id)
+        .subscribe((data:number) => {
+          this.caEstimeInverse.push(data);
+        }, err => {
+          console.log(err);
+        });
+        this.reportingService.CARParProjetParAnnee(this.anneesProjet[j],this.projet.id)
+        .subscribe((data:number) => {
+          this.caRealiseInverse.push(data);
+        }, err => {
+          console.log(err);
+        });
+      
+      }
+      
+      
    }
  
 
@@ -132,7 +147,22 @@ export class ReportingComponent implements OnInit {
 
     }
      this.anneesProjet=newListeAnnee2;
-     console.log(newListeAnnee2)
+     this.caEstimeInverse=null;
+      for(let j=0;j<this.anneesProjet.length;j++){
+        this.reportingService.CAEParProjetParAnnee(this.anneesProjet[j],this.projet.id)
+        .subscribe((data:number) => {
+          this.caEstimeInverse.push(data);
+        }, err => {
+          console.log(err);
+        });
+        this.reportingService.CARParProjetParAnnee(this.anneesProjet[j],this.projet.id)
+        .subscribe((data:number) => {
+          this.caRealiseInverse.push(data);
+        }, err => {
+          console.log(err);
+        });
+      
+      }
   }
   reportingParAnnee(){
     this.hideComponent.reportingParAnnee=1;
