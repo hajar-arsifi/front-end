@@ -1,0 +1,17 @@
+<br>
+<table>
+  <tr>
+    <td><app-dropdown></app-dropdown></td>
+    <td>
+      <div class="dropdown" *ngIf="annees">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Les années
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let a of annees"><a [routerLink]="['/contrat-by-annee',a]" routerLinkActive="active">{{a}}</a></li>
+        </ul>
+      </div>
+    </td>
+  </tr>
+</table>
+<br>
+<app-tableau-projets></app-tableau-projets>

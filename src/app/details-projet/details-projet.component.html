@@ -1,0 +1,200 @@
+<div *ngIf="currentContrat" class="container">
+  <br><br>
+  <div class="panel panel-info">
+   <div class="panel-heading"><span class=" glyphicon glyphicon-plus-sign" style="color:white;"></span>&nbsp;&nbsp;Détails contrat</div> 
+    <div class="panel-body">
+      <ul >
+        <li> <span>Contrat numéro :</span> {{currentContrat.id}}</li>
+        <li *ngIf="client"><span >Client :</span> {{client.nom}}</li>
+        <li><span>Nom du projet :</span>  {{currentContrat.nom}}</li>
+        <li> <span>Date de création :</span> {{currentContrat.jour | number :'2.0'}} / {{ currentContrat.mois |number :'2.0'}} / {{currentContrat.annee}}</li>
+        <li><span>Etat de projet :</span> {{currentContrat.etat}}</li>
+        <li  *ngIf="departement"><span>Departement de projet:</span> {{departement.libelle}}</li>
+      </ul>
+      <br>
+     <div class="panel panel-default" >
+        <div class="panel-heading">Liste des profils</div>
+      <div class="panel-body">
+          <table class="table" align="center" style="width: 90%;" >
+            <tr>
+              <th>Numéro de profil</th>
+              <th>Libellé </th>
+              <th>Tarif</th>
+              <th>Jours vendus</th>
+              <th>Prix</th>
+            </tr>
+            <tr *ngFor="let p of currentContrat.profils">
+              <td>{{p.code}}</td>
+              <td>{{p.libelle}}</td>
+              <td>{{p.tjm}}</td>
+              <td>{{p.nombreJourLimite}}</td>
+              <td>{{p.nombreJourLimite*p.tjm}}</td>
+            </tr>
+          </table>
+        </div> 
+        <div class="panel-footer"><button class="btn btn-info" title="Nouveau profil" data-toggle="tooltip"
+         (click)="openModal()"><span class=" glyphicon glyphicon-plus" style="color:white;" ></span></button></div>
+      </div>
+      
+      <div class="panel panel-default" *ngIf="factures && currentContrat.type!='Non facturé'">
+        <div class="panel-heading">Liste des factures</div>
+        <div class="panel-body">
+          <table class="table" align="center" style="width: 90%;">
+            <tr>
+              <th>Numéro de facture</th>
+              <th>Durée d'écheance</th>
+              <th>Etat de paiement</th>
+              <th>Montant HT</th>
+              <th>Montant TTC</th>
+              <th>Devise</th>
+              <th>TVA </th>
+              <th>Actions</th>
+            </tr>
+            <tr *ngFor="let f of factures.content">
+              <td>{{f.numero}}</td>
+              <td>{{f.dureeEcheance}}</td>
+              <td>{{f.etat}}</td>
+              <td>{{f.montant}}</td>
+              <td>{{f.montant+ f.montant *(f.tva /100) }}</td>
+              <td>{{f.devise}}</td>
+              <td>{{f.tva}}</td>
+              <td>
+                <button class="btn btn-success" title="Afficher" data-toggle="tooltip" 
+              [routerLink]="['/AfficherFacture',f.numero,currentContrat.id]" routerLinkActive="active" >
+                <span  class=" glyphicon glyphicon-eye-open" style="color:white; "></span></button>&nbsp;
+                <button class="btn btn-info" title="Valider paiement" data-toggle="tooltip" (click)="validerPaiement(f.numero)">
+                <span  class=" glyphicon glyphicon-thumbs-up" style="color:white; "></span></button>&nbsp;
+                 <button class="btn btn-danger" title="Supprimer" data-toggle="tooltip" (click)="Supprimer(f.numero)">
+                <span  class=" glyphicon glyphicon-trash" style="color:white; "></span></button>
+               
+
+                </td>
+            </tr>
+          </table>
+          <ul *ngIf="pages" class="nav nav-pills">
+            <li class="clickable"*ngFor="let p of pages; let i=index" [ngClass]="i==currentPage1?'active':''">
+                <a (click)="onPageFacture(i)">{{i}}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-footer"><button class="btn btn-info" title="Générer facture" data-toggle="tooltip"
+     [routerLink]="['/facture',currentContrat.id]" routerLinkActive="active" [disabled]="test===false">
+     <span class=" glyphicon glyphicon-pencil" style="color:white;" ></span></button></div>
+      <div class="panel-footer">Afficher les factures archivées &nbsp;&nbsp;
+      <input class = "checkbox checkbox-inline" type = "checkbox" [(ngModel)]="archive"/></div>
+    </div>
+     </div>
+ <div class="panel panel-default" *ngIf="archive">
+         <div class="panel-heading">Liste des factures archivées </div>
+        <div class="panel-body">
+          <table class="table" align="center" style="width: 90%;" *ngIf="facturesArchives">
+            <tr>
+              <th>Numéro de facture</th>
+              <th>Durée d'écheance</th>
+              <th>Etat de paiement</th>
+              <th>Montant HT</th>
+              <th>Montant TTC</th>
+              <th>Devise</th>
+              <th>TVA </th>
+              <th>Actions</th>
+            </tr>
+            <tr *ngFor="let f of facturesArchives.content">
+              <td>{{f.numero}}</td>
+              <td>{{f.dureeEcheance}}</td>
+              <td>{{f.etat}}</td>
+              <td>{{f.montant}}</td>
+              <td>{{f.montant+ f.montant *(f.tva /100) }}</td>
+              <td>{{f.devise}}</td>
+              <td>{{f.tva}}</td>
+              <td>
+                <button class="btn btn-success" title="Afficher" data-toggle="tooltip" [routerLink]="['/AfficherFacture',f.numero,currentContrat.id]" routerLinkActive="active" >
+                <span  class=" glyphicon glyphicon-eye-open" style="color:white; "></span></button>
+                </td>
+             </tr>
+          </table>
+          <ul *ngIf="pages" class="nav nav-pills">
+            <li class="clickable"*ngFor="let p of pages; let i=index" [ngClass]="i==currentPage2?'active':''">
+                <a (click)="onPageFactureArchives(i)">{{i}}</a>
+            </li>
+          </ul>
+        </div>
+       
+    </div>
+    </div>
+      </div>
+       
+  
+<div class="row"> 
+  <modal #addProfil>
+    <modal-header>
+      <h1>Ajouter un nouveau profil : </h1>
+    </modal-header>
+    <modal-content>
+      <div class="panel panel-default" xmlns:date="http://www.w3.org/1999/xhtml">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            Ajouter un profil:
+          </div>
+          <div class="panel-body">
+            <form #f="ngForm" (ngSubmit)="f.form.valid && ajouterProfil(f.value)" novalidate>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label class="control-label"> Libellé : </label>
+                    <input class="form-control" type="text" name="libelle" ngModel pattern="^[a-zA-Z]+[-_]?[a-zA-Z ]*"
+                      required minlength="4" #libelle="ngModel">
+                  </div>
+                  <div *ngIf="libelle.invalid && (libelle.dirty || libelle.touched)" class="alert alert-danger">
+                    <div *ngIf="libelle.errors.required">
+                      Le libellé est requis.
+                    </div>
+                    <div *ngIf="libelle.errors.pattern">
+                      Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+                    </div>
+                    <div *ngIf="libelle.errors.minlength">
+                      Le libellé doit comporter au moins 4 caractères.
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Taux : </label>
+                    <input class="form-control" type="number" name="tjm" ngModel pattern="^[0-9]*"
+                      required #tjm="ngModel">
+                  </div>
+                  <div *ngIf = "tjm.invalid && (tjm.dirty || tjm.touched)"
+                           class="alert alert-danger">
+                        <div *ngIf = "tjm.errors.required">
+                          Le taux est requis.
+                        </div>
+                        <div *ngIf = "tjm.errors.pattern">
+                          Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                        </div>
+                  </div>  
+                  <div class="form-group">
+                    <label class="control-label"> Jours vendus: </label>
+                    <input class="form-control" type="number" name="nombreJourLimite" ngModel pattern="^[0-9]*" required
+                      #jours="ngModel" >
+                  </div>
+                  <div *ngIf="jours.invalid && (jours.dirty || jours.touched)" class="alert alert-danger">
+                    <div *ngIf="jours.errors.required">
+                      Le nombre de jours est requis.
+                    </div>
+                    <div *ngIf="jours.errors.pattern">
+                      Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                    </div>
+                  </div>
+                </div>
+              </div>
+      
+              <button type="submit" class="btn btn-info" data-toggle="modal" [disabled]="f.form.pristine || f.form.invalid">
+                <span class="glyphicon glyphicon-plus"></span>
+                Ajouter
+              </button>
+            </form>
+            <div class="alert alert-success" *ngIf="profil">Profil bien ajouté</div>
+          </div>
+        </div>
+      </div>
+    </modal-content>
+  </modal>
+</div>
+

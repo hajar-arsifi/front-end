@@ -1,0 +1,14 @@
+span{
+    color: midnightblue;
+    font-weight: bold;
+}
+hr{
+    color:midnightblue;
+    text-align: center;
+    width: 60%;
+    size:3;
+    border:1px solid midnightblue;
+}
+td{
+    border:2px solid white;
+}

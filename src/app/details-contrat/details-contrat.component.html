@@ -1,0 +1,83 @@
+<div class="panel panel-default" xmlns:date="http://www.w3.org/1999/xhtml">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Details du contrat :
+    </div>
+    <div class="panel-body">
+      <div class="panel panel-default" *ngIf="client">
+          <div class="panel-heading">
+            Information du client :
+          </div>
+          <div class="panel-body">
+            <label>Code client :</label>
+            <p>{{client.code}}</p>
+            <label>Nom client :</label>
+            <p>{{client.nom}}</p>
+            <label>RC :</label>
+            <p>{{client.rc}}</p>
+            <label>ICE :</label>
+            <p>{{client.ice}}</p>
+          </div>
+        </div>
+      <div class="panel panel-default" *ngIf="projet">
+        <div class="panel-heading">
+          Information du projet :
+        </div>
+        <div class="panel-body">
+          <label>Nom du projet :</label>
+          <p>{{projet.nom}}</p>
+          <label>Description :</label>
+          <p>{{projet.description}}</p>
+          <label>Etat :</label>
+          <p>{{projet.etat}}</p>
+          <label>Type :</label>
+          <p>{{projet.type}}</p>
+          <label>Durée du contrat :</label>
+          <p>{{projet.duree}}</p>
+          <label>Date de création du contrat :</label>
+          <p>{{projet.jour | number:'2.0'}}-{{projet.mois | number:'2.0'}}-{{projet.annee}}</p>
+          <label *ngIf="departement">Département responsable : </label>
+          <p>{{departement.libelle}}</p>
+        </div>
+      </div>
+      <div class="panel panel-default" *ngIf="facture">
+        <div class="panel-heading">
+          Facturation :
+        </div>
+        <div class="panel-body">
+          <label>Date d'échéance :</label>
+          <p *ngIf="dateEcheance">{{dateEcheance |  date:'yyyy-MM-dd'}}</p>
+          <label>Devise :</label>
+          <p>{{facture.devise}}</p>
+          <label>Taux de change:</label>
+          <p>{{facture.taux}}</p>
+          <label>Montant HT :</label>
+          <p>{{facture.montant}}</p>
+          <label>Taux de tva:</label>
+          <p>{{facture.tva}}</p>
+        </div>
+      </div>
+      <div class="panel panel-default" *ngIf="profils">
+        <div class="panel-heading">
+          Profils :
+        </div>
+        <div class="panel-body">
+          <table class="table table-striped">
+            <tr>
+              <th>Libellé :</th>
+              <th>TJM :</th>
+              <th>Nombre de jours limite :</th>
+              <th>Prix estimé :</th>
+            </tr>
+            <tr *ngFor="let p of profils;">
+              <th>{{p.libelle}}</th>
+              <th>{{p.tjm}}</th>
+              <th>{{p.nombreJourLimite}}</th>
+              <th>{{p.nombreJourLimite * p.tjm}}</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="container">
+    <br><br>
+    <div class="panel panel-primary" *ngIf="currentClient">
+        <div class="panel-heading"><span class=" glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Modification de client</div>
+        <div class="panel-body">
+            <form #f="ngForm" (ngSubmit)="f.form.valid && onUpdateContrat(f.value)" novalidate>
+                <div class="form-group">
+                    <label class="control-label">Nom du client</label>
+                    <input class="form-control" type="text" name="nom" required pattern="^[a-zA-Z-é]+[-_]?[a-zA-Z0-9 ]*[éèàùêâ]*[a-zA-Z ]"
+                        required minlength="4" ngModel [(ngModel)]="currentClient.nom" #nom="ngModel">
+                </div>
+                <div *ngIf="nom.invalid">
+                    <div *ngIf="nom.errors.required" class="alert alert-danger">
+                        Le nom du client est requis.
+                    </div>
+                    <div *ngIf="nom.errors.minlength" class="alert alert-danger">
+                        Le nom du client doit comporter au moins 4 caractères.
+                    </div>
+                    <div *ngIf="nom.errors.pattern" class="alert alert-danger">
+                        Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Adresse :</label>
+                    <input class="form-control" type="text" name="adresse" required ngModel
+                        [(ngModel)]="currentClient.adresse" pattern="^[a-zA-Z-é]+[-_]?[a-zA-Z0-9 ]*[éèàùêâ]*[a-zA-Z ]" minlength="4"
+                        #adresse="ngModel">
+                </div>
+                <div *ngIf="adresse.invalid">
+                    <div *ngIf="adresse.errors.minlength" class="alert alert-danger">
+                        Adresse tout courte.</div>
+                    <div *ngIf="adresse.errors.pattern" class="alert alert-danger">
+                        Les caractéres spéciaux ne sont pas autorisés.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">RC :</label>
+                    <input class="form-control" type="text" name = "rc" ngModel pattern="^[0-9]*" required
+                           #rc="ngModel" minlength = "6" maxlength="6" [(ngModel)]="currentClient.rc">
+                </div>
+                <div *ngIf="rc.invalid">
+
+                    <div *ngIf="rc.errors.required" class="alert alert-danger">
+                        Le RC est requis.</div>
+                  <div *ngIf = "rc.errors.pattern" class="alert alert-danger">
+                    Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                  </div>
+                  <div *ngIf = "rc.errors.minlength" class="alert alert-danger">
+                    Le RC doit contenir 6 chiffres.
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">ICE :</label>
+                    <input class="form-control" type="text" name="ice" ngModel [(ngModel)]="currentClient.ice"
+                           pattern="^[0-9]*" required #ice="ngModel" minlength = "6" maxlength="6">
+                </div>
+                <div *ngIf="ice.invalid">
+
+                    <div *ngIf="ice.errors.required" class="alert alert-danger">
+                        Le ice est requis.</div>
+                  <div *ngIf = "ice.errors.pattern" class="alert alert-danger">
+                    Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                  </div>
+                  <div *ngIf = "ice.errors.minlength" class="alert alert-danger">
+                    L'ICE doit contenir 6 chiffres.
+                  </div>
+                </div>
+                <button class="btn btn-success" type="submit"  [disabled]="f.form.invalid"><span class=" glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Enregistrer</button>
+            </form>
+        </div>
+    </div>
+</div>

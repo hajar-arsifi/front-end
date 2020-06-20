@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+  <div class="panel-heading"><span class=" glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Liste des contrats</div>
+  <div class="panel-body">
+
+    <table class="table table-striped" *ngIf="contrats">
+      <tr>
+        <th>Numéro de contrat</th><th>Nom de projet</th><th>Type de contrat </th>
+        <th>Date de création</th><th>Durée de projet</th><th>Etat de projet </th>
+        <th>Description</th>
+      </tr>
+      <tr *ngFor="let c of contrats.content">
+        <td>{{c.id}}</td>
+        <td>{{c.nom}}</td>
+        <td>{{c.type}}</td>
+        <td>{{c.jour  | number :'2.0'}}/{{c.mois | number :'2.0'}}/{{c.annee}}</td>
+        <td>{{c.duree}}</td>
+        <td>{{c.etat}}</td>
+        <td>{{c.description}}</td>
+        <td><a class="btn btn-info" title="Details" data-toggle="tooltip" [routerLink]="['/details-projet',c.id]" routerLinkActive="active"><span class=" glyphicon glyphicon-plus-sign"></span></a></td>
+      </tr>
+    </table>
+    <ul *ngIf="pages" class="nav nav-pills">
+      <li class="clickable"*ngFor="let p of pages; let i=index" [ngClass]="i==currentPage?'active':''">
+        <a (click)="onPageContrat(i)">{{i}}</a>
+      </li>
+    </ul>
+    <div class="alert alert-danger" *ngIf="contrats.totalElements == 0">
+      Contarts inexistants
+    </div>
+  </div>
+</div>

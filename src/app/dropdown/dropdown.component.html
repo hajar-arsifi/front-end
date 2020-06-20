@@ -1,0 +1,22 @@
+<div class="dropdown">
+  <button class="btn btn-primary" type="button">Afficher par
+    <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a routerLink="/dropdown-clients">Client</a></li>
+    <li><a routerLink="/dropdown-etats">Etat de projet</a></li>
+    <li><a routerLink="/dropdown-annees">Date de création</a></li>
+  </ul>
+  <a class="btn btn-success" (click)="openModal()" title="Ajouter" data-toggle="tooltip">
+    <span class=" glyphicon glyphicon-plus"></span>
+  </a>
+</div>
+<div class="row">
+  <modal #ContratCreation>
+    <modal-header>
+      <h1>Ajouter une nouvelle contrat : </h1>
+    </modal-header>
+    <modal-content>
+      <app-contrat-creation></app-contrat-creation>
+    </modal-content>
+  </modal>
+</div>

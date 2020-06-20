@@ -1,0 +1,64 @@
+<div class="panel panel-default" xmlns:date="http://www.w3.org/1999/xhtml">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Ajouter un profil:
+    </div>
+    <div class="panel-body">
+      <form #f="ngForm" (ngSubmit)="f.form.valid && ajouterProfil(f.value)" novalidate>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="control-label"> Libellé : </label>
+              <input class="form-control" type="text" name="libelle" ngModel pattern="^[a-zA-Z]+[-_]?[a-zA-Z ]*"
+                required minlength="4" #libelle="ngModel">
+            </div>
+            <div *ngIf="libelle.invalid && (libelle.dirty || libelle.touched)" class="alert alert-danger">
+              <div *ngIf="libelle.errors.required">
+                Le libellé est requis.
+              </div>
+              <div *ngIf="libelle.errors.pattern">
+                Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+              </div>
+              <div *ngIf="libelle.errors.minlength">
+                Le libellé doit comporter au moins 4 caractères.
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Taux : </label>
+              <input class="form-control" type="number" name="tjm" ngModel pattern="^[0-9]*"
+                required #tjm="ngModel">
+            </div>
+            <div *ngIf = "tjm.invalid && (tjm.dirty || tjm.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf = "tjm.errors.required">
+                    Le taux est requis.
+                  </div>
+                  <div *ngIf = "tjm.errors.pattern">
+                    Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                  </div>
+            </div>  
+            <div class="form-group">
+              <label class="control-label"> Jours vendus: </label>
+              <input class="form-control" type="number" name="nombreJourLimite" ngModel pattern="^[0-9]*" required
+                #jours="ngModel" >
+            </div>
+            <div *ngIf="jours.invalid && (jours.dirty || jours.touched)" class="alert alert-danger">
+              <div *ngIf="jours.errors.required">
+                Le nombre de jours est requis.
+              </div>
+              <div *ngIf="jours.errors.pattern">
+                Les lettres et les caractéres spéciaux ne sont pas autorisés.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-info" data-toggle="modal" [disabled]="f.form.pristine || f.form.invalid">
+          <span class="glyphicon glyphicon-plus"></span>
+          Ajouter
+        </button>
+      </form>
+     
+    </div>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+ <div class="panel panel-primary">
+    <div class="panel-heading"><span class=" glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Liste des contrats</div>
+    <div class="panel-body">
+
+        <table class="table table-striped" *ngIf="contrats">
+            <tr>
+                <th>Numéro de contrat</th><th>Nom de projet</th><th>Type de contrat </th>
+                <th>Date de création</th><th>Durée de projet</th><th>Etat de projet </th>
+                <th>Description</th>
+            </tr>
+            <tr *ngFor="let c of contrats.content">
+                <td>{{c.id}}</td>
+                <td>{{c.nom}}</td>
+                <td>{{c.type}}</td>
+                <td>{{c.jour  | number :'2.0'}}/{{c.mois | number :'2.0'}}/{{c.annee}}</td>
+                <td>{{c.duree}}</td>
+                <td>{{c.etat}}</td>
+                <td>{{c.description}}</td>
+                <td><table cellpading="5" class="bouton"><tr><td><a class="btn btn-danger" title="Supprimer" data-toggle="tooltip" (click)="onDeleteContrat(c)"><span class=" glyphicon glyphicon-trash"></span></a></td></tr></table></td>
+                <td><a class="btn btn-success" (click)="openModalEdit(c.id)" title="Modifier" data-toggle="tooltip" ><span class=" glyphicon glyphicon-pencil"></span></a></td>
+                <td><a class="btn btn-info" title="Details" data-toggle="tooltip" [routerLink]="['/details-projet',c.id]" routerLinkActive="active"><span class=" glyphicon glyphicon-plus-sign"></span></a></td>
+                </tr>
+        </table>
+        <ul *ngIf="pages" class="nav nav-pills">
+            <li class="clickable"*ngFor="let p of pages; let i=index" [ngClass]="i==currentPage?'active':''">
+                <a (click)="onPageContrat(i)">{{i}}</a>
+            </li>
+        </ul>
+      <div class="alert alert-danger" *ngIf="contrats.totalElements == 0">
+        Contarts inexistants
+      </div>
+    </div>
+</div>
+<div class="row">
+ <modal #EditContrat>
+   <modal-header>
+     <h1>Modification de contrat : </h1>
+   </modal-header>
+   <modal-content>
+     <div class="panel panel-primary" *ngIf="currentContrat">
+       <div class="panel-heading"><span class=" glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Modification de contrat</div>
+       <div class="panel-body">
+         <form #f="ngForm" (ngSubmit)="f.form.valid && onUpdateContrat(f.value)" novalidate>
+           <input type="hidden" name="id" [(ngModel)]="currentContrat.id">
+           <div class="form-group">
+             <label class="control-label">Nom du projet</label>
+             <input class="form-control" type="text" name="nom" required pattern="^[a-zA-Zé]+[éèàùêâ]*[-_]?([a-zA-Z0-9 ]*[éèàùêâ]?[a-zA-Z ]*)*"
+                    required minlength="4" ngModel [(ngModel)]="currentContrat.nom" #nom="ngModel">
+           </div>
+           <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+             <div *ngIf="nom.errors.required" class="alert alert-danger">
+               Le nom du projet est requis.
+             </div>
+             <div *ngIf="nom.errors.minlength" class="alert alert-danger">
+               Le nom du projet doit comporter au moins 4 caractères.
+             </div>
+             <div *ngIf="nom.errors.pattern" class="alert alert-danger">
+               Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label">Description :</label>
+             <input class="form-control" type="text" name="description" required ngModel
+                    [(ngModel)]="currentContrat.description" pattern="^[a-zA-Z-é]+[-_]?[a-zA-Z0-9 ]*[éèàùêâ]*[a-zA-Z ]" minlength="4"
+                    #description="ngModel">
+           </div>
+           <div *ngIf="description.invalid && (description.dirty || description.touched)">
+             <div *ngIf="description.errors.minlength" class="alert alert-danger">
+               Description tout courte.</div>
+             <div *ngIf="description.errors.pattern" class="alert alert-danger">
+               Les caractéres spéciaux ne sont pas autorisés.</div>
+           </div>
+           <div class="form-group">
+             <label class="control-label">Type de contrat :</label>
+             <select name="type" class="form-control" ngModel [(ngModel)]="currentContrat.type" #type="ngModel"
+                     required>
+               <option>Régie</option>
+               <option>Forfait</option>
+               <option>Non facturé</option>
+
+             </select>
+           </div>
+           <div *ngIf="type.invalid && (type.dirty || type.touched)">
+             <div *ngIf="type.errors.required" class="alert alert-danger">
+               Le type est requis.</div>
+           </div>
+
+           <div class="form-group">
+             <label class="control-label">Date de création</label>
+             <input class="form-control" type="date" name="date" ngModel
+                    [ngModel]="currentContrat.date | date:'yyyy-MM-dd'" readonly>
+           </div>
+
+           <div class="form-group">
+             <label class="control-label">Durée</label>
+             <input class="form-control" type="number" name="duree" ngModel [(ngModel)]="currentContrat.duree"
+                    #duree="ngModel" required pattern="^[0-9]*">
+           </div>
+           <div *ngIf="duree.invalid && (duree.dirty || duree.touched)">
+             <div *ngIf="duree.errors.required" class="alert alert-danger">
+               La durée est requis.</div>
+             <div *ngIf="duree.errors.pattern" class="alert alert-danger">
+               Les caractéres spéciaux ne sont pas autorisés.</div>
+           </div>
+           <div class="form-group">
+             <label class="control-label">Etat</label>
+             <select name="etat" class="form-control" ngModel [(ngModel)]="currentContrat.etat" #etat="ngModel" required>
+               <option>Terminé</option>
+               <option>En cours</option>
+               <option>Non commencé</option>
+             </select>
+           </div>
+           <div *ngIf="etat.invalid && (etat.dirty || etat.touched)">
+             <div *ngIf="etat.errors.required" class="alert alert-danger">
+               L'état' est requis.</div>
+           </div>
+           <button class="btn btn-success" type="submit"  [disabled]="f.form.invalid"><span class=" glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Enregistrer</button>
+         </form>
+       </div>
+     </div>
+     <div class="panel panel-primary" *ngIf="currentContrat">
+       <div class="panel-heading"><span class=" glyphicon glyphicon-user" ></span>&nbsp;&nbsp;Liste des profils</div>
+       <div class="panel-body">
+         <table class="table table-striped" >
+           <tr>
+             <th>Numéro de profil</th>
+             <th>Libellé </th>
+             <th>Tarif</th>
+             <th>Jours vendus</th>
+             <th>Prix</th>
+           </tr>
+           <tr *ngFor="let p of currentContrat.profils">
+             <td>{{p.code}}</td>
+             <td>{{p.libelle}}</td>
+             <td>{{p.tjm}}</td>
+             <td>{{p.nombreJourLimite}}</td>
+             <td>{{p.nombreJourLimite*p.tjm}}</td>
+             <td><button class="btn btn-success mx-3"  (click)="onGetProfil(p)"><span class=" glyphicon glyphicon-repeat" ></span></button></td>
+             <td><button class="btn btn-danger mx-3"  (click)="onDeleteProfil(p)"><span class=" glyphicon glyphicon-trash" ></span></button></td>
+           </tr>
+         </table>
+       </div>
+     </div>
+
+     <div class="panel panel-primary" *ngIf = "n == 1">
+       <div class="panel-heading"><span class=" glyphicon glyphicon-edit" ></span>&nbsp;&nbsp;Modification de profil</div>
+       <div class="panel-body">
+         <form #e="ngForm" (ngSubmit)="e.form.valid && onUpdateProfil(e.value)" novalidate>
+           <input type="hidden" name="code" ngModel  [(ngModel)]="profil.code" >
+           <div class="form-group">
+             <label class="control-label">Libellé</label>
+             <input class="form-control" type="text" name="libelle" required ngModel
+                    [(ngModel)]="profil.libelle" #libelle="ngModel"  pattern="^[a-zA-Z-é]+[-_]?[a-zA-Z0-9 ]*[éèàùêâ]*[a-zA-Z ]"
+                    required minlength="4">
+           </div>
+           <div *ngIf="libelle.invalid && (libelle.dirty || libelle.touched)">
+             <div *ngIf="libelle.errors.minlength" class="alert alert-danger">
+               Libellé tout court.</div>
+             <div *ngIf="libelle.errors.pattern" class="alert alert-danger">
+               Les caractéres spéciaux ne sont pas autorisés.</div>
+           </div>
+           <div class="form-group">
+             <label class="control-label">Tarif</label>
+             <input class="form-control" type="number" name="tjm" required ngModel
+                    [(ngModel)]="profil.tjm" #tjm="ngModel">
+           </div>
+           <div *ngIf="tjm.invalid && (tjm.dirty || tjm.touched)">
+             <div *ngIf="tjm.errors.required" class="alert alert-danger">
+               Le tarif est requis.</div>
+             <div *ngIf="tjm.errors.pattern" class="alert alert-danger">
+               Les caractéres spéciaux ne sont pas autorisés.</div>
+           </div>
+           <div class="form-group">
+             <label class="control-label">Jours vendus</label>
+             <input class="form-control" type="number" name="nombreJourLimite" required ngModel
+                    [(ngModel)]="profil.nombreJourLimite" #jours="ngModel">
+           </div>
+           <div *ngIf="jours.invalid && (jours.dirty || jours.touched)">
+             <div *ngIf="jours.errors.required" class="alert alert-danger">
+               Le nombre de jours est requis.</div>
+             <div *ngIf="jours.errors.pattern" class="alert alert-danger">
+               Les caractéres spéciaux ne sont pas autorisés.</div>
+           </div>
+           <button class="btn btn-success" type="submit"  ><span class=" glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Enregistrer</button>
+
+         </form>
+       </div>
+     </div>
+     <div class="panel panel-primary" *ngIf="departement">
+       <div class="panel-heading"><span class=" glyphicon glyphicon-edit" ></span>&nbsp;&nbsp;Modification de département</div>
+       <div class="panel-body">
+         <label>Département de projet : {{departement.libelle}}</label>
+         <form  #g="ngForm" (ngSubmit)="affectDepartement(g.value)" n>
+           <div class="form-group" *ngIf="departements">
+             <label class="control-label">Choisissez un nouveau département:</label>
+             <select name="departement" class="form-control" ngModel   required>
+               <option *ngFor="let d of departements" value="{{d.id}}">{{d.libelle}}</option>
+             </select>
+           </div>
+           <button class="btn btn-success" type="submit"  ><span class=" glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Enregistrer</button>
+         </form>
+       </div>
+     </div>
+
+   </modal-content>
+ </modal>
+</div>

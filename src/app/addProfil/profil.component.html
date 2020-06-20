@@ -1,0 +1,127 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Gestion de profils :
+  </div>
+  <div class="panel-body">
+    <form #i="ngForm" (ngSubmit)="i.form.valid && ajouterProfils(i.value)" novalidate>
+      <table class="table table-striped">
+        <tr>
+          <th>Profil </th>
+          <th>Tarif</th>
+          <th>Jours vendus</th>
+          <th>Prix</th>
+        </tr>
+        <tr>
+          <th>
+            <input class="form-control" type="text" name="profil1" ngModel (change)="Increment($event)" pattern="^[a-zA-Z ]+" #profil="ngModel" required>
+          </th>
+          <th>
+            <input class="form-control" type="number" name="tarif1" ngModel [(ngModel)] = "nb1"  required>
+          </th>
+          <th>
+            <input class="form-control" type="number" name="nbjour1" ngModel [(ngModel)] = "nb2" required>
+          </th>
+          <th>
+            <input class="form-control" type="number" name="prix1" value ="{{nb1 * nb2}}" disabled>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <input class="form-control" type="text" name="profil2" ngModel (change)="Increment($event)">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="tarif2" ngModel [(ngModel)] = "nb3">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="nbjour2" ngModel [(ngModel)] = "nb4">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="prix2" disabled value = "{{nb3 * nb4}}">
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <input class="form-control" type="text" name="profil3" ngModel (change)="Increment($event)">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="tarif3" ngModel [(ngModel)] = "nb5">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="nbjour3" ngModel [(ngModel)] = "nb6">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="prix3" disabled value = "{{nb5 * nb6}}">
+          </th>
+        </tr>
+        <tr *ngIf="nbProfil == 1">
+          <th>
+            <input class="form-control" type="text" name="profil4" ngModel (change)="Increment($event)">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="tarif4" ngModel [(ngModel)] = "nb7">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="nbjour4" ngModel [(ngModel)] = "nb8">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="prix4" disabled value = "{{nb7 * nb8}}">
+          </th>
+        </tr>
+        <tr *ngIf="nbProfil == 1">
+          <th>
+            <input class="form-control" type="text" name="profil5" ngModel (change)="Increment($event)">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="tarif5" ngModel [(ngModel)] = "nb9">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="nbjour5" ngModel [(ngModel)] = "nb10">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="prix5" disabled value = "{{nb9 * nb10}}">
+          </th>
+        </tr>
+        <tr *ngIf="nbProfil == 1">
+          <th>
+            <input class="form-control" type="text" name="profil6" ngModel (change)="Increment($event)">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="tarif6" ngModel [(ngModel)] = "nb11">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="nbjour6" ngModel [(ngModel)] = "nb12">
+          </th>
+          <th>
+            <input class="form-control" type="number" name="prix6" disabled value = "{{nb11 * nb12}}">
+          </th>
+        </tr>
+        <tr>
+          <th>
+          </th>
+          <th>
+            <input class="form-control" type="number" name="sommeTarif" ngModel value="{{sommeTarif()}}"  disabled>
+          </th>
+          <th>
+            <input class="form-control" type="number" name="sommeJour" ngModel value="{{sommeJour()}}" disabled>
+          </th>
+          <th>
+            <input class="form-control" type="number" name="sommePrix" disabled value = "{{TotalPrix()}}">
+          </th>
+        </tr>
+        <tr *ngIf = "profil.invalid && (profil.dirty || profil.touched)">
+          <th *ngIf = "profil.errors.required" class="alert alert-danger">
+            Vous devez avoir un profil par projet.
+          </th>
+        </tr>
+      </table>
+    <button type="button" class="btn btn-success" (click)="addRowProfils()" *ngIf="nbProfil != 1  && hideComponentService.showComponent < 4" >
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+      <br/>
+    <button type="submit" class="btn btn-info" *ngIf="hideComponentService.showComponent < 4" [disabled]="i.form.pristine || i.form.invalid">
+      <span class="glyphicon glyphicon-arrow-right"></span>
+      Suivant
+    </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Affectation départemental :
+  </div>
+  <div class="panel-body">
+    <table class = "table">
+      <tr>
+        <th>
+          <input class="form-control" value="{{projet.nom}}" disabled>
+        </th>
+        <th>
+          <select class="form-control" type="text" ngModel [(ngModel)]="idDept">
+            <option *ngFor="let d of departements" value="{{d.id}}" >
+              {{d.libelle}}
+            </option>
+          </select>
+        </th>
+      </tr>
+    </table>
+    <button class="btn btn-success" (click) = "affectProject()"  >
+      <span class="glyphicon glyphicon-ok"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+

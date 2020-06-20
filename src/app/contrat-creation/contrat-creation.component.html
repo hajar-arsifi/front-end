@@ -1,0 +1,16 @@
+<div class="panel panel-default" xmlns:date="http://www.w3.org/1999/xhtml">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Ajouter une Contrat
+    </div>
+    <div class="panel-body">
+      <div>
+        <app-select-client (childEvent) = "message=$event"></app-select-client>
+        <app-projet [parentData] = "message" *ngIf = "hideComponentService.showComponent >= 1"></app-projet>
+        <app-facture *ngIf = "hideComponentService.showComponent >= 2 && hideComponentService.hideComponent==0"></app-facture>
+        <app-profil *ngIf = "hideComponentService.showComponent >= 3"></app-profil>
+        <app-affectation-departemental *ngIf = "hideComponentService.showComponent >= 4"></app-affectation-departemental>
+    </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Information pour la facturation :
+  </div>
+  <div class="panel-body">
+    <form #g="ngForm" (ngSubmit)="g.form.valid && ajouterFacture(g.value)" novalidate>
+    <table class="table table-striped">
+      <tr>
+       <th><label class="control-label"> Durée d'échéance : </label></th>
+        <th><input class="form-control" type="number" name="dureeEcheance" ngModel required #duree="ngModel" pattern="^[0-9]*">
+        <th></th>
+      </tr>
+      <tr *ngIf = "duree.invalid && (duree.dirty || duree.touched)">
+        <th></th>
+        <th *ngIf = "duree.errors.required" class="alert alert-danger">
+          La durée est requis.
+        </th>
+        <th *ngIf = "duree.errors.pattern" class="alert alert-danger">
+          Les caractéres spéciaux ne sont pas autorisés.
+        </th>
+        
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <th><label class="control-label">Taux de tva : </label></th>
+        <th><input class="form-control" type="number" name="tva" ngModel required #tva="ngModel" pattern="^[0-9]*">
+        <th></th>
+      </tr>
+      <tr *ngIf = "tva.invalid && (tva.dirty || tva.touched)">
+        <th></th>
+        <th *ngIf = "tva.errors.required" class="alert alert-danger">
+          Le taux de TVA est requis.
+        </th>
+        <th *ngIf = "tva.errors.pattern" class="alert alert-danger">
+          Les caractéres spéciaux ne sont pas autorisés.
+        </th>
+        
+        <th></th>
+        <th></th>
+      </tr>
+      <tr><th>Contrepartie en devise :</th></tr>
+      <tr>
+        <th><label class="control-label"> Devise : </label></th>
+        <th><input class="form-control" type="text" name="devise"  pattern="[A-Z]{3}" #devise="ngModel"  ngModel [(ngModel)]="defaultDevise"></th>
+      </tr>
+      <tr *ngIf = "(devise.invalid && (devise.dirty || devise.touched))">
+        <th></th>
+        <th></th>
+        <th *ngIf = "devise.errors.pattern" class="alert alert-danger">
+          Le devise soit comprendre 3 lettres majuscules.
+        </th>
+      </tr>
+      <tr>
+        <th><label class="control-label"> Taux de change : </label></th>
+        <th><input class="form-control" type="number" name="taux"  pattern="([0-9]*[.])?[0-9]+" #taux="ngModel" ngModel [(ngModel)]="defaultTaux"></th>
+      </tr>
+      <tr *ngIf = "taux.invalid && (taux.dirty || taux.touched)">
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th *ngIf = "taux.errors.pattern" class="alert alert-danger">
+          Les caractéres spéciaux ne sont pas autorisés sauf le ".".
+        </th>
+      </tr>
+     
+    </table>
+      <button type="reset" class="btn btn-warning" (click)="back()" *ngIf="saveProjet.goBack == 2">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        Retour
+      </button>
+      <button type="submit" class="btn btn-info" *ngIf="hideComponentService.showComponent < 3" [disabled]="g.form.pristine || g.form.invalid">
+        Suivant
+        <span class="glyphicon glyphicon-arrow-right"></span>
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class = "container"> 
+    <ul class = "nav nav-tabs"> 
+      <li class =" nav-item "> 
+        <div class="form-group">
+        <select class="form-control" [(ngModel)]="selectedCritere" (ngModelChange)="onGetCritere($event)">
+          <option [value]="0">----select critère-----</option>
+          <option value="1">Projet</option>
+          <option value="2">Profil</option>
+          <option value="3">Client</option>
+        </select>
+      </div>
+      </li>
+      <li class =" nav-item " *ngIf="hideComponent.chooseCritere==1"> 
+        <div class="form-group">
+        <select class="form-control" [(ngModel)]="selectedProjet" (ngModelChange)="onModelChange($event)">
+          <option [value]="0">----select projet-----</option>
+          <option *ngFor="let p of projets" [value]="p.id">{{p.nom}}</option>
+        </select>
+      </div>
+      </li>
+      
+      <li>
+        <button class="btn btn-info" *ngIf="hideComponent.reportingProjet==1"  (click)="reportingParAnnee()">Par annee</button>
+      </li>
+      <li>
+        <button class="btn btn-success" *ngIf="hideComponent.reportingProjet==1" (click)="reportingParMois()">Par mois</button>
+      </li>
+      <li>
+        <button class="btn btn-default" *ngIf="hideComponent.reportingProjet==1">Par jour</button>
+      </li>
+    </ul> <br>
+    <ul class = "nav nav-tabs" *ngIf="hideComponent.reportingParAnnee==1"> 
+      <li class =" nav-item "> 
+        <div class="form-group"> de : 
+        <select class="form-control" [(ngModel)]="selectedAnneeDebut" (ngModelChange)="onSelectAnneeDebut($event)" >
+          <option [value]="0" >----select annee début-----</option>
+          <option *ngFor="let a of listeAnnees" [value]="a">{{a}}</option>
+        </select>
+      </div>
+      </li>
+      <li class =" nav-item "> 
+        <div class="form-group"> à : 
+        <select class="form-control" [(ngModel)]="selectedAnneeFin" (ngModelChange)="onSelectAnneeFin($event)" >
+          <option [value]="0">----select annee fin-----</option>
+          <option *ngFor="let a of listeAnnees"[value]="a" >{{a}}</option>
+        </select>
+      </div>
+      </li>
+     
+    </ul> 
+    <ul class = "nav nav-tabs" *ngIf="hideComponent.reportingParMois==1"> 
+      <li class =" nav-item "> 
+        <div class="form-group"> de : 
+        <input type="month" name="moisDebut" >
+      </div>
+      </li>
+      <li class =" nav-item "> 
+        <div class="form-group"> à : 
+          <input type="month" name="moisDebut" >
+      </div>
+      </li>
+     
+    </ul> 
+   
+    <div>
+      <div style="display: block" *ngIf="hideComponent.reportingProjet==1">
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="anneesProjet"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType">
+        </canvas>
+      </div>
+    </div>
+    
+  </div>

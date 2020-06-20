@@ -1,0 +1,21 @@
+<br>
+<div class="container">
+  <table>
+    <tr>
+      <td><app-dropdown></app-dropdown></td>
+      <td>
+        <div class="dropdown" *ngIf="clients">
+          &nbsp;
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Clients
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let c of clients">
+          <a [routerLink]="['/contrat-by-client',c.code]" routerLinkActive="active">{{c.nom}}</a></li>
+        </ul>
+      </div>
+      </td>
+    </tr>
+  </table>
+<br>
+<app-tableau-projets></app-tableau-projets>
+</div>

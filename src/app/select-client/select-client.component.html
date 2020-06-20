@@ -1,0 +1,22 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Information du client :
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <tr>
+        <th><label class="control-label"> Nom du client : </label></th>
+        <th>
+          <select class="form-control" type="text" name="nom" ngModel (click) = "sendIdClient()"  [(ngModel)]="code">
+            <option *ngFor="let c of clients" value="{{c.code}}" (mousedown)="sendIdClient()">
+              {{c.nom}}
+            </option>
+          </select>
+        </th>
+        <th><label class="control-label"> Code : </label></th>
+        <th><input class="form-control" type="number" name="code" ngModel value="{{code}}" disabled></th>
+      </tr>
+    </table>
+  </div>
+</div>

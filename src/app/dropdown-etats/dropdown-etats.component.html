@@ -1,0 +1,21 @@
+<br>
+<table>
+  <tr>
+    <td><app-dropdown></app-dropdown></td>
+    <td>
+      <div class="dropdown">
+        &nbsp;
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Etats de projet
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a routerLink="/projets-termines" routerLinkActive="active">Terminé</a></li>
+          <li><a routerLink="/projets-en-cours" routerLinkActive="active">En cours</a></li>
+          <li><a routerLink="/projets-en-attente" routerLinkActive="active">En attente</a></li>
+      
+        </ul>
+      </div>
+    </td>
+  </tr>
+</table>
+ <br>
+<app-tableau-projets></app-tableau-projets>

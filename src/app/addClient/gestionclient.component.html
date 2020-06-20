@@ -1,0 +1,102 @@
+<div class="panel panel-default" xmlns:date="http://www.w3.org/1999/xhtml">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Ajouter un client :
+    </div>
+    <div class="panel-body">
+      <form #f="ngForm" (ngSubmit) = "f.form.valid && ajouterClient(f.value)" novalidate>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Information du client :
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="control-label"> Nom du client : </label>
+              <input class="form-control" type="text" name = "nom" ngModel
+                     pattern="^[a-zA-Z]+[-_]?[a-zA-Z ]*" required minlength = "4" #nom="ngModel">
+              <div class="form-group">
+                <div *ngIf = "nom.invalid && (nom.dirty || nom.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf = "nom.errors.required">
+                    Le nom est requis.
+                  </div>
+                  <div *ngIf = "nom.errors.pattern">
+                    Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+                  </div>
+                  <div *ngIf = "nom.errors.minlength">
+                    Le nom doit comporter au moins 4 caractères.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label"> Adresse : </label>
+              <input class="form-control" type="text" name = "adresse" ngModel
+                     pattern="^[a-zA-Z0-9 ]+[-_]?[a-zA-Z0-9 ]*" minlength = "4" required #adresse="ngModel">
+              <div class="form-group">
+                <div *ngIf = "adresse.invalid && (adresse.dirty || adresse.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf = "adresse.errors.required">
+                    L'adresse est requis.
+                  </div>
+                  <div *ngIf = "adresse.errors.pattern">
+                    Les caractéres spéciaux ne sont pas autorisés.
+                  </div>
+                  <div *ngIf = "adresse.errors.minlength">
+                    Le nom doit comporter au moins 4 caractères.
+                  </div>
+                </div>
+            </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label"> RC : </label>
+              <input class="form-control" type="text" name = "rc" ngModel
+                     pattern="^[0-9]*" required #rc="ngModel" minlength = "6" maxlength="6">
+              <div class="form-group">
+                <div *ngIf = "rc.invalid && (rc.dirty || rc.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf = "rc.errors.required">
+                    Le RC est requis.
+                  </div>
+                  <div *ngIf = "rc.errors.pattern">
+                    Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                  </div>
+                  <div *ngIf = "rc.errors.minlength">
+                    Le RC doit contenir 6 chiffres.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label"> ICE : </label>
+              <input class="form-control" type="text" name = "ice" ngModel
+                     pattern="^[0-9]*" required #ice="ngModel" minlength = "6" maxlength="6">
+              <span class="validity"></span>
+              <div class="form-group">
+                <div *ngIf = "ice.invalid && (ice.dirty || ice.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf = "ice.errors.required">
+                    L'ICE est requis.
+                  </div>
+                  <div *ngIf = "ice.errors.pattern">
+                    Les lettres et les caractéres spéciaux ne sont pas autorisés.
+                  </div>
+                  <div *ngIf = "ice.errors.minlength">
+                    L'ICE doit contenir 6 chiffres.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-info" data-toggle="modal" [disabled]="f.form.pristine || f.form.invalid">
+          <span class="glyphicon glyphicon-plus"></span>
+          Ajouter
+        </button>
+        <div *ngIf="client == null" class="alert alert-danger">
+          <p>Client existant, Veuillez vérifier que le nom, rc et ice sont uniques</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

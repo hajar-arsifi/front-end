@@ -1,0 +1,175 @@
+<br>
+<form #f="ngForm" (ngSubmit)="onChercher(f.value)">
+    <div class="form-group">
+        <input type="text" name="motCle" ngModel  [(ngModel)]="motCle">&nbsp;
+        <button class="btn btn-warning" title="Rechercher" data-toggle="tooltip"><span class=" glyphicon glyphicon-search"></span></button>
+    </div>
+
+</form>
+<br>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+      <span class=" glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;
+      Liste des clients
+      <button class="btn btn-success" (click)="openModal()" title="Ajouter" data-toggle="tooltip">
+        <span class=" glyphicon glyphicon-plus"></span>
+      </button>
+      <label>Clients archivés : </label><input class = "checkbox checkbox-inline" type = "checkbox" [(ngModel)]="archive"/>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped" *ngIf="clients">
+            <tr>
+                <th>Code de client</th><th>Nom de client</th><th>Adresse</th>
+                <th>RC</th><th>ICE</th>
+            </tr>
+            <tr *ngFor="let c of clients.content">
+              <td>{{c.code}}</td>
+              <td>{{c.nom}}</td>
+              <td>{{c.adresse}}</td>
+              <td>{{c.rc}}</td>
+              <td>{{c.ice}}</td>
+              <td>
+                <table class="bouton">
+                  <tr>
+                    <td>
+                      <a class="btn btn-danger" (click)="onDeleteClient(c)" title="Supprimer" data-toggle="tooltip">
+                        <span class=" glyphicon glyphicon-trash"></span>
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <a class="btn btn-success" (click)="openModalEdit(c.code)" title="Modifier" data-toggle="tooltip">
+                  <span class=" glyphicon glyphicon-pencil"></span>
+                </a>
+              </td>
+              <td>
+                <a class="btn btn-info" [routerLink]="['/contrat-by-client',c.code]" routerLinkActive="active" title="Contrats du client" data-toggle="tooltip">
+                  <span class=" glyphicon glyphicon-th-list"></span>
+                </a>
+              </td>
+            </tr>
+        </table>
+        <ul *ngIf="pages" class="nav nav-pills nav-warning">
+            <li class="clickable"*ngFor="let p of pages; let i=index" [ngClass]="i==currentPage?'active':''">
+                <a (click)="onPageClient(i)">{{i + 1}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="panel panel-warning" *ngIf="archive">
+  <div class="panel-heading">
+    <span class=" glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;
+    Liste des clients archivés :
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <tr>
+        <th>Code de client</th><th>Nom de client</th><th>Adresse</th>
+        <th>RC</th><th>ICE</th>
+      </tr>
+      <tr *ngFor="let c of clientsArchives.content">
+        <td>{{c.code}}</td>
+        <td>{{c.nom}}</td>
+        <td>{{c.adresse}}</td>
+        <td>{{c.rc}}</td>
+        <td>{{c.ice}}</td>
+      </tr>
+    </table>
+    <ul *ngIf="pages" class="nav nav-pills nav-warning">
+      <li class="clickable"*ngFor="let p of pages; let i=index" [ngClass]="i==currentPage?'active':''">
+        <a (click)="onPageClient(i)">{{i + 1}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <modal #ClientCreation>
+    <modal-header>
+      <h1>Ajouter un client : </h1>
+    </modal-header>
+    <modal-content>
+      <app-gestionclient></app-gestionclient>
+    </modal-content>
+  </modal>
+</div>
+<div class="row">
+  <modal #EditClient>
+    <modal-header>
+      <h1>Modification de client : </h1>
+    </modal-header>
+    <modal-content>
+      <br><br>
+      <div class="panel panel-primary" *ngIf="currentClient">
+        <div class="panel-heading"><span class=" glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Modification de client</div>
+        <div class="panel-body">
+          <form #f="ngForm" (ngSubmit)="f.form.valid && onUpdateContrat(f.value)" novalidate>
+            <div class="form-group">
+              <label class="control-label">Nom du client</label>
+              <input class="form-control" type="text" name="nom" required pattern="^[a-zA-Z-é]+[-_]?[a-zA-Z0-9 ]*[éèàùêâ]*[a-zA-Z ]"
+                     required minlength="4" ngModel [(ngModel)]="currentClient.nom" #nom="ngModel">
+            </div>
+            <div *ngIf="nom.invalid">
+              <div *ngIf="nom.errors.required" class="alert alert-danger">
+                Le nom du client est requis.
+              </div>
+              <div *ngIf="nom.errors.minlength" class="alert alert-danger">
+                Le nom du client doit comporter au moins 4 caractères.
+              </div>
+              <div *ngIf="nom.errors.pattern" class="alert alert-danger">
+                Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Adresse :</label>
+              <input class="form-control" type="text" name="adresse" required ngModel
+                     [(ngModel)]="currentClient.adresse" pattern="^[a-zA-Z-é]+[-_]?[a-zA-Z0-9 ]*[éèàùêâ]*[a-zA-Z ]" minlength="4"
+                     #adresse="ngModel">
+            </div>
+            <div *ngIf="adresse.invalid">
+              <div *ngIf="adresse.errors.minlength" class="alert alert-danger">
+                Adresse tout courte.</div>
+              <div *ngIf="adresse.errors.pattern" class="alert alert-danger">
+                Les caractéres spéciaux ne sont pas autorisés.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">RC :</label>
+              <input class="form-control" type="text" name = "rc" ngModel pattern="^[0-9]*" required
+                     #rc="ngModel" minlength = "6" maxlength="6" [(ngModel)]="currentClient.rc">
+            </div>
+            <div *ngIf="rc.invalid">
+
+              <div *ngIf="rc.errors.required" class="alert alert-danger">
+                Le RC est requis.</div>
+              <div *ngIf = "rc.errors.pattern" class="alert alert-danger">
+                Les lettres et les caractéres spéciaux ne sont pas autorisés.
+              </div>
+              <div *ngIf = "rc.errors.minlength" class="alert alert-danger">
+                Le RC doit contenir 6 chiffres.
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">ICE :</label>
+              <input class="form-control" type="text" name="ice" ngModel [(ngModel)]="currentClient.ice"
+                     pattern="^[0-9]*" required #ice="ngModel" minlength = "6" maxlength="6">
+            </div>
+            <div *ngIf="ice.invalid">
+
+              <div *ngIf="ice.errors.required" class="alert alert-danger">
+                Le ice est requis.</div>
+              <div *ngIf = "ice.errors.pattern" class="alert alert-danger">
+                Les lettres et les caractéres spéciaux ne sont pas autorisés.
+              </div>
+              <div *ngIf = "ice.errors.minlength" class="alert alert-danger">
+                L'ICE doit contenir 6 chiffres.
+              </div>
+            </div>
+            <button class="btn btn-success" type="submit"  [disabled]="f.form.invalid"><span class=" glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Enregistrer</button>
+          </form>
+        </div>
+      </div>
+    </modal-content>
+  </modal>
+</div>

@@ -1,0 +1,144 @@
+<br>
+<div class="container">
+    <form  #f="ngForm" (ngSubmit)="f.form.valid && onUpdateFacture(f.value)" novalidate>
+    <div class="panel" id="facture">
+        <div class="panel-body">
+            <table width="100%" align="center">
+                <tr>
+                    <td><img src="../assets/images/logo.jpg" width="250"></td>
+                    <td *ngIf="facture">
+                        <h2>FACTURE N° {{facture.numero}}</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br><br>
+                        <strong>HR PATH Maroc</strong><br>
+                        Marina center, angle Corniche & ZERKTOUNI,<br>
+                        3ème étage,Bureau 16 20050 <br>
+                        Casablanca, Maroc <br>
+                        GSM :0667564635<br>
+                        FAX :0522276413</td>
+                    <td style="width:30%" *ngIf="client">
+                        Client : {{client.nom}}<br>
+                        Numéro : {{client.code}}<br>
+                        Adresse : {{client.adresse}}
+                    </td>
+                </tr>
+            </table>
+            <br><br>
+          
+                <label>Le
+                    {{ facture.jourCreation | number:'2.0'}}/{{ facture.moisCreation| number:'2.0' }}/{{ facture.anneeCreation }}</label>
+                <br>
+                <label *ngIf="projet">Projet : {{projet.nom}}</label>
+                <br><br>
+                <table class="table table-stripped" border="1" *ngIf="details">
+                    <tr style="background-color :#3498DB;">
+                        <th>Profil </th>
+                        <th>Taux journalier moyen </th>
+                        <th>Nombre d'heures</th>
+                        <th>Sous total</th>
+                        <th>Commentaire</th>
+                    </tr>
+                    
+                        <tr *ngFor="let d of details; let i=index ">
+                            <td>{{d.nomProfil}}</td>
+                            <td>{{d.tjm}}</td>
+                            <td>{{d.nombreHeures}}</td>
+                            <td><label *ngIf="hideComponent.hideForm==0">{{d.sousPrix}}</label>
+                                   <div class="form-group" *ngIf="hideComponent.hideForm==1">      
+                                        <input type="text"  name=sousPrix  [(ngModel)]="d.sousPrix" ngModel>
+                                        </div>   
+                                     </td>
+                            <td><label *ngIf="hideComponent.hideForm==0" >{{d.commentaire}}</label>
+                                   <div class="form-group" *ngIf="hideComponent.hideForm==1">
+                                       
+                                        <input type="text" name=commentaire ng-value="d.commentaire" ngModel>    
+                                        <input type="hidden" name=id ngModel  [(ngModel)]="d.id"> 
+                                        &nbsp;                         
+                                    
+                                    </div>         
+                            </td>
+                            <td>
+                                <button class="btn btn-success" ><span class=" glyphicon glyphicon-ok"
+                                    style="color:white;"></span></button>
+                            </td>
+
+                    </tr>
+                </table>
+             
+                <table align="right" border="1" *ngIf="facture">
+                    <tr>
+                        <td>Total hors taxes</td>
+                        <td>
+                        <label *ngIf="hideComponent.hideForm==0">{{facture.montant }}{{facture.devise}}</label>
+                        <div  *ngIf="hideComponent.hideForm==1">
+                            <div class="form-group"  >
+                                <input class="form-control" name="montant" type="number"  ngModel [(ngModel)]="facture.montant"
+                                pattern="^[0-9]*" required #montant="ngModel">
+                            </div>
+                            <div *ngIf="montant.invalid && (montant.dirty || montant.touched)">
+                                <div *ngIf="montant.errors.required" class="alert alert-danger">
+                                    Le montant HT est requis. </div>
+                                <div *ngIf = "montant.errors.pattern" class="alert alert-danger">
+                                    Les caractéres spéciaux ne sont pas autorisés.
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td> <label *ngIf="hideComponent.hideForm==0">TVA en  {{facture.tva}} %</label>
+                            <table *ngIf="hideComponent.hideForm==1"> 
+                                <tr><td><br></td></tr>
+                                <tr>
+                                    <td align="center">TVA <br> </td>
+                                    <td width="50%">
+                                        <div class="form-group">
+                                            <input class="form-control" name="tva" type="number"  ngModel [(ngModel)]="facture.tva"
+                                            pattern="^[0-9]*" required #tva="ngModel">
+                                        </div>
+                                        <div *ngIf="tva.invalid && (tva.dirty || tva.touched)">
+                                            <div *ngIf="tva.errors.required" class="alert alert-danger">
+                                                Le taux de TVA est requis. </div>
+                                            <div *ngIf = "tva.errors.pattern" class="alert alert-danger">
+                                                Les caractéres spéciaux ne sont pas autorisés.
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            </td>
+                 
+             
+                <td>{{ facture.montant *(facture.tva /100) }} {{facture.devise}}</td>
+                </tr>
+                <tr>
+                    <td>Montant TTC en {{facture.devise}}</td>
+                    <td>{{facture.montant+ facture.montant *(facture.tva /100) }} {{facture.devise}}</td>
+                </tr>
+                </table>
+    
+                <br><br><br><br><br><br><br><br><br><br><br>
+               
+                    <table *ngIf="facture"><tr><td><br><font color="gray">Conditions de paiement : paiement à réception de facture à </font></td>
+                    <td>&nbsp;&nbsp;<input class="form-control" type="number" name="dureeEcheance" required pattern="^[0-9]*" ngModel
+                        [(ngModel)]="facture.dureeEcheance" #duree="ngModel"
+                            *ngIf="hideComponent.hideForm==1"><span
+                            *ngIf="hideComponent.hideForm==0"><br>{{facture.dureeEcheance}} jours.</span> </td>
+                    </tr></table>
+
+                <br><br><br>
+            
+            <label style="text-align:right;">Signature :</label>
+        </div>
+    </div>
+    <button class="btn btn-info" (click)="telechargerPDF()"  [disabled]="hideComponent.hideForm==1"><span class=" glyphicon glyphicon-download-alt"
+            style="color:white;">&nbsp;Télécharger</span></button>
+    &nbsp;&nbsp;<button class="btn btn-success" (click)="update()" *ngIf="hideComponent.hideForm==0"><span class=" glyphicon glyphicon-edit"
+            style="color:white;">&nbsp;Modifier</span></button>
+            <button class="btn btn-success" type="submit" *ngIf="hideComponent.hideForm==1"><span class=" glyphicon glyphicon-ok"
+                style="color:white;">&nbsp;Enregistrer</span></button>
+            </form>
+</div>

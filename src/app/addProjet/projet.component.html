@@ -1,0 +1,72 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Information sur le projet :
+  </div>
+  <div class="panel-body">
+    <form #h = "ngForm" (ngSubmit) = "h.form.valid && ajouterProjet(h.value)" novalidate>
+      <table class="table table-striped">
+        <tr>
+          <th><label class="control-label"> Nom du projet : </label></th>
+          <th>
+            <input class="form-control" type="text" name="nomProjet" ngModel pattern="^[a-zA-Z]+[-_]?[a-zA-Z ]*" required minlength = "4" #nomProjet="ngModel">
+          </th>
+        </tr>
+        <tr *ngIf = "nomProjet.invalid && (nomProjet.dirty || nomProjet.touched)">
+          <th></th>
+          <th *ngIf = "nomProjet.errors.required" class="alert alert-danger">
+            Le nom du projet est requis.
+          </th>
+          <th *ngIf = "nomProjet.errors.minlength" class="alert alert-danger">
+            Le nom du projet doit comporter au moins 4 caractères.
+          </th>
+          <th *ngIf = "nomProjet.errors.pattern" class="alert alert-danger">
+          Seuls les lettres majuscules, les lettres minuscules, -, _ sont autorisés.
+          </th>
+        </tr>
+        <tr>
+          <th><label class="control-label"> Description : </label></th>
+          <th><input class="form-control" type="text" name="description" ngModel pattern="^[a-zA-Z]+[-_]?[a-zA-Z0-9 ]*" minlength = "4" #description="ngModel"></th>
+        </tr>
+        <tr *ngIf = "description.invalid && (description.dirty || description.touched)">
+          <th></th>
+          <th *ngIf = "description.errors.minlength" class="alert alert-danger">
+            Description tout courte.
+          </th>
+          <th *ngIf = "description.errors.pattern" class="alert alert-danger">
+            Les caractéres spéciaux ne sont pas autorisés.
+          </th>
+        </tr>
+        <tr>
+          <th><label for="type">Type:</label></th>
+          <th><select class="form-control" id="type" name="type" required #type="ngModel" ngModel>
+            <option>Régie</option>
+            <option>Forfait</option>
+            <option>Non facturé</option>
+          </select></th>
+        </tr>
+        <tr *ngIf = "type.invalid && (type.dirty || type.touched)">
+          <th></th>
+          <th *ngIf = "type.errors.required" class="alert alert-danger">
+            Le type est requis.
+          </th>
+        </tr>
+        <tr>
+          <th><label class="control-label"> Date début: </label></th>
+          <th><input class="form-control" type="date" name="dateContrat" [ngModel]="currentDate | date:'yyyy-MM-dd'" ngModel></th>
+        </tr>
+        <tr>
+          <th><label class="control-label"> Date fin: </label></th>
+          <th><input class="form-control" type="date" name="dateFin"  ngModel></th>
+        </tr>
+      </table>
+      <button type="reset" class="btn btn-warning" (click)="back()" *ngIf="saveProjet.goBack == 1">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        Retour
+      </button>
+      <button type="submit" class="btn btn-info" *ngIf="hideComponentService.showComponent < 2" [disabled]="h.form.pristine || h.form.invalid">
+        Suivant
+        <span class="glyphicon glyphicon-arrow-right"></span> 
+      </button>
+    </form>
+  </div>
+</div>

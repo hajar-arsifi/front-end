@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-sm-3 col-md-3">
+
+    <nav class="navbar navbar-inverse sidebar" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+
+          <a class="navbar-brand" href="#">Logo</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+            <li ><a href="#">Profil<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+            <li class="dropdown">
+              <a  class="dropdown-toggle" data-toggle="dropdown" routerLink="/clients">Clients<span class="caret"></span><span style="font-size:16px;"
+                                                                                                                               class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+              <ul class="dropdown-menu forAnimate" role="menu">
+
+                <li><a routerLink="/clients">Consulter liste clients</a></li>
+
+                <li><a routerLink="/createClient" >Ajouter client</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a routerLink="/contrats" class="dropdown-toggle" data-toggle="dropdown">Contrats<span class="caret"></span><span style="font-size:16px;"
+                                                                                                                                class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a>
+              <ul class="dropdown-menu forAnimate" role="menu">
+                <li><a  routerLink="/contrats">Consulter liste contrats</a></li>
+                <li><a  routerLink="/contratsArchivees">Consulter liste contrats archivées</a></li>
+                <li><a  routerLink="/createContrat">Ajouter contrat</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturation<span class="caret"></span><span style="font-size:16px;"
+                                                                                                                     class="pull-right hidden-xs showopacity glyphicon glyphicon-duplicate"></span></a>
+              <ul class="dropdown-menu forAnimate" role="menu">
+                <li><a href="#">Consulter</a></li>
+                <li><a href="#">Ajouter </a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Agenda<span class="caret"></span><span style="font-size:16px;"
+                                                                                                                class="pull-right hidden-xs showopacity glyphicon glyphicon-calendar"></span></a>
+              <ul class="dropdown-menu forAnimate" role="menu">
+                <li><a href="#">Consulter</a></li>
+                <li><a href="#">Ajouter </a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a routerLink="/Reporting" class="dropdown-toggle" data-toggle="dropdown">Reporting<span class="caret"></span><span style="font-size:16px;"
+                                                                                                                                class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a>
+              <ul class="dropdown-menu forAnimate" role="menu">
+                <li><a  routerLink="/contrats">Consulter liste contrats</a></li>
+                <li><a  routerLink="/contratsArchivees">Consulter liste contrats archivées</a></li>
+                <li><a  routerLink="/createContrat">Ajouter contrat</a></li>
+              </ul>
+            </li>
+
+            <li><a href="#">Se déconnecter<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-log-out"></span></a></li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="main">
+      <!-- Content Here -->
+    </div>
+  </div>
+  <div class="col-sm-9 col-md-7">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+
